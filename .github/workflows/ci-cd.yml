@@ -1,4 +1,4 @@
-name: CI-CD
+﻿name: CI-CD
 on:
   push:
     branches: [main]
@@ -63,12 +63,40 @@ jobs:
           name: coverage-billing-service
           path: coverage/
       - run: docker build -t billing-service:${{ github.sha }} .
+
   deploy-kubernetes:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.KUBE_CONFIG != ''
+    name: Deploy Kubernetes
     needs: test-build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir -p ~/.kube && echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
-      - run: kubectl apply -f k8s/
-      - run: kubectl rollout status deployment/billing-service --timeout=120s
+
+      - name: Verificar configuraÃ§Ã£o Kubernetes
+        id: kube-check
+        shell: bash
+        run: |
+          if [ -n "$KUBE_CONFIG" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG nÃ£o configurado. Deploy ignorado."
+          fi
+
+      - name: Configurar kubectl
+        if: steps.kube-check.outputs.configured == 'true'
+        shell: bash
+        run: |
+          mkdir -p ~/.kube
+          echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+
+      - name: Aplicar manifestos
+        if: steps.kube-check.outputs.configured == 'true'
+        run: kubectl apply -f k8s/
+
+      - name: Validar rollout
+        if: steps.kube-check.outputs.configured == 'true'
+        run: kubectl rollout status deployment/billing-service --timeout=120s
+
