@@ -1,0 +1,270 @@
+﻿{
+    "variable":  [
+                     {
+                         "key":  "billing_url",
+                         "value":  "http://localhost:3101"
+                     }
+                 ],
+    "info":  {
+                 "description":  "Rotas de orçamento, pagamento, Checkout Pro e webhook.",
+                 "name":  "Tech Challenge Fase 4 - Billing Service",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "item":  [
+                 {
+                     "name":  "Health Check",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Listar orçamentos",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/orcamentos"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/orcamentos"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Buscar orçamento",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/orcamentos/1"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/orcamentos/1"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Criar orçamento",
+                     "request":  {
+                                     "body":  {
+                                                  "raw":  "{\n  \"ordem_id\": 1,\n  \"valor\": 850.00,\n  \"descricao\": \"Troca e revisão do sistema de freios\"\n}",
+                                                  "options":  {
+                                                                  "raw":  {
+                                                                              "language":  "json"
+                                                                          }
+                                                              },
+                                                  "mode":  "raw"
+                                              },
+                                     "method":  "POST",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/orcamentos"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/orcamentos"
+                                             },
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Aprovar orçamento",
+                     "request":  {
+                                     "body":  {
+                                                  "raw":  "{\n  \"status\": \"APROVADO\"\n}",
+                                                  "options":  {
+                                                                  "raw":  {
+                                                                              "language":  "json"
+                                                                          }
+                                                              },
+                                                  "mode":  "raw"
+                                              },
+                                     "method":  "PATCH",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/orcamentos/1/status"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/orcamentos/1/status"
+                                             },
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Listar pagamentos",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Buscar pagamento",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos/1"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos/1"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Criar pagamento",
+                     "request":  {
+                                     "body":  {
+                                                  "raw":  "{\n  \"orcamento_id\": 1,\n  \"valor\": 850.00\n}",
+                                                  "options":  {
+                                                                  "raw":  {
+                                                                              "language":  "json"
+                                                                          }
+                                                              },
+                                                  "mode":  "raw"
+                                              },
+                                     "method":  "POST",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos"
+                                             },
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Confirmar pagamento",
+                     "request":  {
+                                     "body":  {
+                                                  "raw":  "{\n  \"status\": \"CONFIRMADO\",\n  \"referencia_externa\": \"POSTMAN-001\"\n}",
+                                                  "options":  {
+                                                                  "raw":  {
+                                                                              "language":  "json"
+                                                                          }
+                                                              },
+                                                  "mode":  "raw"
+                                              },
+                                     "method":  "PATCH",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos/1/status"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos/1/status"
+                                             },
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Verificar pagamento confirmado da ordem",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos/ordem/1/confirmado"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos/ordem/1/confirmado"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Criar Checkout Pro",
+                     "request":  {
+                                     "method":  "POST",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos/1/checkout"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos/1/checkout"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Sincronizar com Mercado Pago",
+                     "request":  {
+                                     "method":  "POST",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/pagamentos/1/sincronizar"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/pagamentos/1/sincronizar"
+                                             },
+                                     "header":  [
+
+                                                ]
+                                 }
+                 },
+                 {
+                     "name":  "Webhook Mercado Pago",
+                     "request":  {
+                                     "body":  {
+                                                  "raw":  "{\n  \"data\": {\n    \"id\": \"ID_DO_PAGAMENTO_MERCADO_PAGO\"\n  }\n}",
+                                                  "options":  {
+                                                                  "raw":  {
+                                                                              "language":  "json"
+                                                                          }
+                                                              },
+                                                  "mode":  "raw"
+                                              },
+                                     "method":  "POST",
+                                     "url":  {
+                                                 "host":  [
+                                                              "{{billing_url}}/webhooks/mercado-pago"
+                                                          ],
+                                                 "raw":  "{{billing_url}}/webhooks/mercado-pago"
+                                             },
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ]
+                                 }
+                 }
+             ]
+}
