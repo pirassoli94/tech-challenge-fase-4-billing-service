@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: billing-service-config
+data:
+  DB_HOST: postgres-billing
+  DB_PORT: "5432"
+  DB_NAME: billing_service_db
+  OS_SERVICE_URL: http://os-service:3000
+  RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: billing-service-secret
+type: Opaque
+stringData:
+  DB_USER: SUBSTITUIR
+  DB_PASSWORD: SUBSTITUIR
+  MERCADO_PAGO_ACCESS_TOKEN: SUBSTITUIR

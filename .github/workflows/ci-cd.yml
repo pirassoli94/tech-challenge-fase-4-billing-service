@@ -1,0 +1,74 @@
+name: CI-CD
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: billing_service_test_db
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      NODE_ENV: test
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: billing_service_test_db
+      OS_SERVICE_URL: http://localhost:3000
+      RABBITMQ_URL: amqp://guest:guest@localhost:5672
+      MERCADO_PAGO_ACCESS_TOKEN: APP_USR-TOKEN-DE-TESTE-SIMULADO
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Criar schema de teste
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d billing_service_test_db <<'SQL'
+          CREATE TABLE IF NOT EXISTS orcamentos (
+            id SERIAL PRIMARY KEY,
+            ordem_id INTEGER NOT NULL,
+            valor NUMERIC(10,2) NOT NULL,
+            descricao TEXT NOT NULL,
+            status VARCHAR(50) NOT NULL DEFAULT 'PENDENTE'
+          );
+          CREATE TABLE IF NOT EXISTS pagamentos (
+            id SERIAL PRIMARY KEY,
+            orcamento_id INTEGER NOT NULL REFERENCES orcamentos(id),
+            valor NUMERIC(10,2) NOT NULL,
+            status VARCHAR(50) NOT NULL DEFAULT 'PENDENTE',
+            referencia_externa VARCHAR(255)
+          );
+          SQL
+      - run: npm run test:coverage -- --coverageThreshold='{"global":{"statements":80,"lines":80}}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-billing-service
+          path: coverage/
+      - run: docker build -t billing-service:${{ github.sha }} .
+  deploy-kubernetes:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.KUBE_CONFIG != ''
+    needs: test-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p ~/.kube && echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+      - run: kubectl apply -f k8s/
+      - run: kubectl rollout status deployment/billing-service --timeout=120s
