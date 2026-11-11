@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.docker
+.env.test
+coverage/
+*.log
+index.backup.js
+patch-*.js

@@ -1,0 +1,226 @@
+
+> billing-service@1.0.0 test
+> jest --runInBand --coverage
+
+PASS ./mercado-pago.test.js
+  ● Console
+
+    console.log
+      Conexão com o PostgreSQL realizada com sucesso!
+
+      at log (index.js:47:13)
+
+    console.error
+      Erro ao criar preferência no Mercado Pago: Falha simulada no Mercado Pago
+
+    [0m [90m 807 |[39m
+     [90m 808 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 809 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 810 |[39m         [32m"Erro ao criar preferência no Mercado Pago:"[39m[33m,[39m
+     [90m 811 |[39m         erro[33m.[39mmessage
+     [90m 812 |[39m       )[33m;[39m[0m
+
+      at error (index.js:809:15)
+
+    console.log
+      Mensagem PAGAMENTO_CONFIRMADO enviada para o RabbitMQ
+
+      at log (index.js:288:11)
+
+    console.error
+      Erro ao sincronizar pagamento: Mercado Pago respondeu 500: Erro externo simulado
+
+    [0m [90m 858 |[39m       })[33m;[39m
+     [90m 859 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 860 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 861 |[39m         [32m"Erro ao sincronizar pagamento:"[39m[33m,[39m
+     [90m 862 |[39m         erro[33m.[39mmessage
+     [90m 863 |[39m       )[33m;[39m[0m
+
+      at error (index.js:860:15)
+
+    console.log
+      Mensagem PAGAMENTO_CONFIRMADO enviada para o RabbitMQ
+
+      at log (index.js:288:11)
+
+    console.log
+      Mensagem PAGAMENTO_CONFIRMADO enviada para o RabbitMQ
+
+      at log (index.js:288:11)
+
+    console.error
+      Erro no webhook do Mercado Pago: Mercado Pago respondeu 404: Pagamento externo nÃ£o encontrado
+
+    [0m [90m 905 |[39m       })[33m;[39m
+     [90m 906 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 907 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 908 |[39m         [32m"Erro no webhook do Mercado Pago:"[39m[33m,[39m
+     [90m 909 |[39m         erro[33m.[39mmessage
+     [90m 910 |[39m       )[33m;[39m[0m
+
+      at error (index.js:907:15)
+
+    console.error
+      Erro no webhook do Mercado Pago: Pagamento interno 999999 nao encontrado
+
+    [0m [90m 905 |[39m       })[33m;[39m
+     [90m 906 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 907 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 908 |[39m         [32m"Erro no webhook do Mercado Pago:"[39m[33m,[39m
+     [90m 909 |[39m         erro[33m.[39mmessage
+     [90m 910 |[39m       )[33m;[39m[0m
+
+      at error (index.js:907:15)
+
+PASS ./index.test.js
+  ● Console
+
+    console.log
+      Conexão com o PostgreSQL realizada com sucesso!
+
+      at log (index.js:47:13)
+
+    console.log
+      Mensagem PAGAMENTO_CONFIRMADO enviada para o RabbitMQ
+
+      at log (index.js:1012:17)
+
+    console.log
+      Mensagem PAGAMENTO_CONFIRMADO enviada para o RabbitMQ
+
+      at log (index.js:1012:17)
+
+    console.error
+      Erro ao listar orçamentos: Falha simulada ao listar orçamentos
+
+    [0m [90m 376 |[39m
+     [90m 377 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 378 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 379 |[39m       [32m"Erro ao listar orçamentos:"[39m[33m,[39m
+     [90m 380 |[39m       erro[33m.[39mmessage
+     [90m 381 |[39m     )[33m;[39m[0m
+
+      at error (index.js:378:13)
+
+    console.error
+      Erro ao buscar orçamento: Falha simulada ao buscar orçamento
+
+    [0m [90m 408 |[39m
+     [90m 409 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 410 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 411 |[39m       [32m"Erro ao buscar orçamento:"[39m[33m,[39m
+     [90m 412 |[39m       erro[33m.[39mmessage
+     [90m 413 |[39m     )[33m;[39m[0m
+
+      at error (index.js:410:13)
+
+    console.error
+      Erro ao criar orçamento: Falha simulada ao criar orçamento
+
+    [0m [90m 479 |[39m
+     [90m 480 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 481 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 482 |[39m       [32m"Erro ao criar orçamento:"[39m[33m,[39m
+     [90m 483 |[39m       erro[33m.[39mmessage
+     [90m 484 |[39m     )[33m;[39m[0m
+
+      at error (index.js:481:13)
+
+    console.error
+      Erro ao atualizar orçamento: Falha simulada ao atualizar orçamento
+
+    [0m [90m 542 |[39m
+     [90m 543 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 544 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 545 |[39m         [32m"Erro ao atualizar orçamento:"[39m[33m,[39m
+     [90m 546 |[39m         erro[33m.[39mmessage
+     [90m 547 |[39m       )[33m;[39m[0m
+
+      at error (index.js:544:15)
+
+    console.error
+      Erro ao listar pagamentos: Falha simulada ao listar pagamentos
+
+    [0m [90m 570 |[39m
+     [90m 571 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 572 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 573 |[39m       [32m"Erro ao listar pagamentos:"[39m[33m,[39m
+     [90m 574 |[39m       erro[33m.[39mmessage
+     [90m 575 |[39m     )[33m;[39m[0m
+
+      at error (index.js:572:13)
+
+    console.error
+      Erro ao buscar pagamento: Falha simulada ao buscar pagamento
+
+    [0m [90m 603 |[39m
+     [90m 604 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 605 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 606 |[39m       [32m"Erro ao buscar pagamento:"[39m[33m,[39m
+     [90m 607 |[39m       erro[33m.[39mmessage
+     [90m 608 |[39m     )[33m;[39m[0m
+
+      at error (index.js:605:13)
+
+    console.error
+      Erro ao verificar pagamento: Falha simulada ao verificar pagamento
+
+    [0m [90m 653 |[39m
+     [90m 654 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 655 |[39m       console[33m.[39merror(
+     [90m     |[39m               [31m[1m^[22m[39m
+     [90m 656 |[39m         [32m"Erro ao verificar pagamento:"[39m[33m,[39m
+     [90m 657 |[39m         erro[33m.[39mmessage
+     [90m 658 |[39m       )[33m;[39m[0m
+
+      at error (index.js:655:15)
+
+    console.error
+      Erro ao registrar pagamento: Falha simulada ao criar pagamento
+
+    [0m [90m 698 |[39m
+     [90m 699 |[39m   } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 700 |[39m     console[33m.[39merror(
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 701 |[39m       [32m"Erro ao registrar pagamento:"[39m[33m,[39m
+     [90m 702 |[39m       erro[33m.[39mmessage
+     [90m 703 |[39m     )[33m;[39m[0m
+
+      at error (index.js:700:13)
+
+    console.error
+      Erro ao atualizar pagamento: Falha simulada ao atualizar pagamento
+
+    [0m [90m 1018 |[39m
+     [90m 1019 |[39m     } [36mcatch[39m (erro) {
+    [31m[1m>[22m[39m[90m 1020 |[39m       console[33m.[39merror(
+     [90m      |[39m               [31m[1m^[22m[39m
+     [90m 1021 |[39m         [32m"Erro ao atualizar pagamento:"[39m[33m,[39m
+     [90m 1022 |[39m         erro[33m.[39mmessage
+     [90m 1023 |[39m       )[33m;[39m[0m
+
+      at error (index.js:1020:15)
+
+----------|---------|----------|---------|---------|-------------------------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                   
+----------|---------|----------|---------|---------|-------------------------------------
+All files |   88.83 |    92.55 |      84 |   88.83 |                                     
+ index.js |   88.83 |    92.55 |      84 |   88.83 | 50,85-164,174,266-270,302,1040-1041 
+----------|---------|----------|---------|---------|-------------------------------------
+
+Test Suites: 2 passed, 2 total
+Tests:       52 passed, 52 total
+Snapshots:   0 total
+Time:        1.76 s, estimated 2 s
+Ran all test suites.
