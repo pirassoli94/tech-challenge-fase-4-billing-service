@@ -1,5 +1,7 @@
 // Importa o Express para criar o servidor e as rotas da API
 const express = require("express");
+const crypto = require("crypto");
+const client = require("prom-client");
 
 // Importa a biblioteca usada para comunicação com o RabbitMQ
 const amqp = require("amqplib");
@@ -66,6 +68,126 @@ const porta = 3001;
 
 // Permite que a API receba dados no formato JSON
 app.use(express.json());
+
+// Registro Prometheus exclusivo do microsservico
+const metricsRegistry = new client.Registry();
+
+client.collectDefaultMetrics({
+  register: metricsRegistry,
+  prefix: "billing_service_"
+});
+
+const httpRequestsTotal = new client.Counter({
+  name: "billing_service_http_requests_total",
+  help: "Total de requisicoes HTTP",
+  labelNames: [
+    "method",
+    "route",
+    "status_code"
+  ],
+  registers: [metricsRegistry]
+});
+
+const httpRequestDuration =
+  new client.Histogram({
+    name:
+      "billing_service_http_request_duration_seconds",
+    help:
+      "Duracao das requisicoes HTTP em segundos",
+    labelNames: [
+      "method",
+      "route",
+      "status_code"
+    ],
+    buckets: [
+      0.01,
+      0.05,
+      0.1,
+      0.3,
+      0.5,
+      1,
+      2,
+      5
+    ],
+    registers: [metricsRegistry]
+  });
+
+// Correlacao, medicao e logs estruturados
+app.use((req, res, next) => {
+  const correlationId =
+    req.get("X-Correlation-ID") ||
+    crypto.randomUUID();
+
+  req.correlationId = correlationId;
+
+  res.set(
+    "X-Correlation-ID",
+    correlationId
+  );
+
+  const start = process.hrtime.bigint();
+
+  res.on("finish", () => {
+    const seconds =
+      Number(
+        process.hrtime.bigint() - start
+      ) / 1_000_000_000;
+
+    const route =
+      req.route?.path ||
+      req.path ||
+      "unknown";
+
+    const labels = {
+      method: req.method,
+      route,
+      status_code: String(
+        res.statusCode
+      )
+    };
+
+    httpRequestsTotal.inc(labels);
+
+    httpRequestDuration.observe(
+      labels,
+      seconds
+    );
+
+    console.log(
+      JSON.stringify({
+        timestamp:
+          new Date().toISOString(),
+        level: "info",
+        service:
+          "billing_service",
+        correlation_id:
+          correlationId,
+        method: req.method,
+        route,
+        status_code:
+          res.statusCode,
+        duration_ms:
+          Number(
+            (seconds * 1000).toFixed(2)
+          )
+      })
+    );
+  });
+
+  next();
+});
+
+// Metricas no formato Prometheus
+app.get("/metrics", async (req, res) => {
+  res.set(
+    "Content-Type",
+    metricsRegistry.contentType
+  );
+
+  res.end(
+    await metricsRegistry.metrics()
+  );
+});
 
 
 // ======================================================
