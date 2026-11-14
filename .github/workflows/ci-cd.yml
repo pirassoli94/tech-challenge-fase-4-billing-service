@@ -1,4 +1,4 @@
-﻿name: CI-CD
+name: CI-CD
 on:
   push:
     branches: [main]
@@ -58,6 +58,11 @@ jobs:
           );
           SQL
       - run: npm run test:coverage -- --coverageThreshold='{"global":{"statements":80,"lines":80}}'
+      - name: SonarQube Cloud Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-billing-service
